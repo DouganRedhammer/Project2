@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/Dougan/Documents/CS157b_Project2_v2/../../Desktop/spring%202013/cs157b/project2%20xml%20data/music_library.xsd" uri="xml-resources/jaxb/music_library/music_library.xsd"/>
+    <system systemId="file:/C:/Users/Dougan/Documents/CS157b_Project2_v2/music_library.xsd" uri="xml-resources/jaxb/music_library/music_library.xsd"/>
+    <system systemId="file:/C:/Users/Dougan/Documents/CS157b_Project2_v2/artist.xsd" uri="xml-resources/jaxb/artist/artist.xsd"/>
+</catalog>

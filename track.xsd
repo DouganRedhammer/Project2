@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 sp1 (http://www.altova.com) by End User (free.org) -->
+<xs:schema xmlns="http://www.cs.sjsu.edu/cs157b/Track" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cs.sjsu.edu/cs157b/Track">
+	<xs:element name="trackTable">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="track" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="track">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="code"/>
+				<xs:element ref="duration"/>
+				<xs:element ref="trackName"/>
+				<xs:element ref="trackComposer_id"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="trackName">
+		<xs:simpleType>
+			<xs:restriction base="xs:string"/>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="duration">
+		<xs:simpleType>
+			<xs:restriction base="xs:string"/>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="trackComposer_id" type="xs:integer"/>
+	<xs:element name="code" type="xs:integer"/>
+</xs:schema>

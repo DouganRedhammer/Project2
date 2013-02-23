@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.cs.sjsu.edu/cs157b/Artist" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cs.sjsu.edu/cs157b/Artist">
+	<xs:element name="artistname">
+		<xs:simpleType>
+			<xs:restriction base="xs:string"/>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="artistid" type="xs:byte"/>
+	<xs:element name="artistTable">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="artist" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="artist">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="artistid"/>
+				<xs:element ref="artistname"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

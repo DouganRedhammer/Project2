@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.cs.sjsu.edu/cs157b/Composer" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cs.sjsu.edu/cs157b/Composer">
+	<xs:element name="composerName">
+		<xs:simpleType>
+			<xs:restriction base="xs:string"/>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="composerId" type="xs:integer"/>
+	<xs:element name="composerTable">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="composer" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="composer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="composerId"/>
+				<xs:element ref="composerName"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
