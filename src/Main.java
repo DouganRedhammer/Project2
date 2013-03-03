@@ -16,16 +16,15 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 /*
- *  The toughest part of this is correctly using the xjc command to generate
- *  the java files in the right location. The other option is to right click 
- *  the project, select new->other>XML->JAXB binding. 
- *  
- *  Select the correct XML Schema and it will do the same thing as the xjc 
- *  command
+ *  Was able to combine the xml object annotation and the hibernate annotations
+ * into one class. The tables must be loaded in a specific order as specified
+ * in the Albums class.
  * 
- *  In the real project it would be better to make methods for marshalling 
- *  and un-marshalling (ConvertToXML and ConvertFromXML or something like that)
- *  maybe Import and Export
+ * Next; need to separate the load into their appropriate classes and try to
+ * get the join table Album_track XML to hibernate to work.
+ * 
+ * Also need to change the name of the database to music_library instead of 
+ * music_library2.
  */
 
 /**
@@ -39,9 +38,9 @@ public class Main
                 Class klasses[] = {Album.class, Artist.class, 
                            Track.class, Composer.class};
         HibernateContext.addClasses(klasses);
-      //  HibernateContext.createSchema();
         Album.load();
         
+       
     }
        
         
