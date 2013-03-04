@@ -77,7 +77,7 @@ public class Album {
     @XmlElement(namespace = "http://www.cs.sjsu.edu/cs157b/Album", required = true)
     protected String albumName;
     @XmlElement(name = "album_id", namespace = "http://www.cs.sjsu.edu/cs157b/Album")
-    private Artist artist;
+    private long artist;
     private List<Track> tracks = new ArrayList<Track>();
     
     /**
@@ -118,10 +118,11 @@ public class Album {
     public List<Track> getTrack() { return tracks; }
     public void setTrack(List<Track> tracks) { this.tracks = tracks; }
     
-    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-    @JoinColumn(name="album_id")
-    public Artist getArtist() { return artist; }
-    public void setArtist(Artist artist) { this.artist = artist; }
+   // @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+   // @JoinColumn(name="album_id")
+    @Column(name="album_id")
+    public long getArtist() { return artist; }
+    public void setArtist(long artist) { this.artist = artist; }
    
     
     public static void load()
