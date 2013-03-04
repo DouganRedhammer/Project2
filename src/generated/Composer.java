@@ -8,16 +8,28 @@
 
 package generated;
 
+import hibernateClasses.HibernateContext;
+import java.io.File;
 import java.math.BigInteger;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 
 
 /**
@@ -105,5 +117,53 @@ public class Composer {
     public void setComposerName(String value) {
         this.composerName = value;
     }
+    public static void load()
+    {
+ 
+        ComposerTable composerTbl;
+        List<Composer> composers;
+   
+   try {
+            JAXBContext jaxbContext =  JAXBContext.newInstance("generated"); 
+            Unmarshaller unMarshaller = jaxbContext.createUnmarshaller();
+    
+            composerTbl = (ComposerTable)unMarshaller.unmarshal(new File("composer.xml"));
+            composers = composerTbl.getComposer();
 
+        
+        Session session = HibernateContext.getSession();
+        
+        Transaction tx = session.beginTransaction();
+        {
+            for(Composer composer: composers)
+                session.save(composer);
+        }
+        tx.commit();
+        session.close();
+
+        System.out.println("Composer XML loaded.");
+            
+        } catch (JAXBException ex) {
+            Logger.getLogger(Album.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            
+    }
+     public static void list()
+    {  
+        Session session = HibernateContext.getSession();
+        Criteria criteria = session.createCriteria(Composer.class);
+        //criteria.addOrder(Order.asc("name"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+       
+        List<Composer> composerList = criteria.list();       
+        System.out.println("All composers in the muisc library:");      
+
+        for (Composer composer : composerList) 
+        {
+            System.out.println(composer.getComposerName());
+        }
+        
+        session.close();
+    }
 }

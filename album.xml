@@ -3,22 +3,27 @@
 <albumTable xsi:schemaLocation="http://www.cs.sjsu.edu/cs157b/Album album.xsd" xmlns="http://www.cs.sjsu.edu/cs157b/Album" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<album>
 		<id>1</id>
-		<artistName>Nevermind</artistName>
+		<albumName>Nevermind</albumName>
 		<album_id>2</album_id>
 	</album>
 	<album>
 		<id>2</id>
-		<artistName>Core</artistName>
+		<albumName>Core</albumName>
 		<album_id>3</album_id>
 	</album>
 	<album>
 		<id>3</id>
-		<artistName>Rotten Apples</artistName>
+		<albumName>Rotten Apples</albumName>
 		<album_id>1</album_id>
 	</album>
 	<album>
 		<id>4</id>
-		<artistName>Adore</artistName>
+		<albumName>Adore</albumName>
 		<album_id>1</album_id>
+	</album>
+		<album>
+		<id>5</id>
+		<albumName>Master of Puppets</albumName>
+		<album_id>4</album_id>
 	</album>
 </albumTable>

@@ -8,6 +8,8 @@
 
 package generated;
 
+import hibernateClasses.HibernateContext;
+import java.io.File;
 import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,6 +18,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
@@ -25,6 +29,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.ManyToMany;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -176,5 +183,36 @@ public class Track {
     public List<Album> getAlbum() { return album; }
     public void setAlbum(List<Album> album) { this.album = album; }
    
+    public static void load()
+    {
+ 
+        TrackTable trackTbl;
+        List<Track> tracks;
+   
+   try {
+            JAXBContext jaxbContext =  JAXBContext.newInstance("generated"); 
+            Unmarshaller unMarshaller = jaxbContext.createUnmarshaller();
+    
+            trackTbl = (TrackTable)unMarshaller.unmarshal(new File("track.xml"));
+            tracks = trackTbl.getTrack();
 
+             
+        Session session = HibernateContext.getSession();
+        
+        Transaction tx = session.beginTransaction();
+        {
+            for(Track track: tracks)
+                session.save(track);
+        }
+        tx.commit();
+        session.close();
+
+        System.out.println("Track XML loaded.");
+            
+        } catch (JAXBException ex) {
+            Logger.getLogger(Album.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            
+    }
 }

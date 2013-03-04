@@ -36,6 +36,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.persistence.Entity;
+import org.hibernate.Criteria;
 
 /**
  * <p>Java class for anonymous complex type.
@@ -61,7 +62,7 @@ import javax.persistence.Entity;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "id",
-    "artistName",
+    "albumName",
     "artist",
     "tracks"
 })
@@ -74,7 +75,7 @@ public class Album {
     @XmlElement(namespace = "http://www.cs.sjsu.edu/cs157b/Album")
     protected long id;
     @XmlElement(namespace = "http://www.cs.sjsu.edu/cs157b/Album", required = true)
-    protected String artistName;
+    protected String albumName;
     @XmlElement(name = "album_id", namespace = "http://www.cs.sjsu.edu/cs157b/Album")
     private Artist artist;
     private List<Track> tracks = new ArrayList<Track>();
@@ -101,12 +102,12 @@ public class Album {
      *     {@link String }
      *     
      */
-    @Column(name="name")
-    public String getArtistName() {
-        return artistName;
+    @Column(name="albumName")
+    public String getAlbumName() {
+        return albumName;
     }
-    public void setArtistName(String value) {
-        this.artistName = value;
+    public void setAlbumName(String value) {
+        this.albumName = value;
     }
 
 
@@ -125,18 +126,10 @@ public class Album {
     
     public static void load()
     {
-        HibernateContext.createSchema();
+       
         AlbumTable albumTbl;   
         List<Album> albums; 
-        
-        ArtistTable artistTbl;
-        List<Artist> artists;
-        
-        ComposerTable composerTbl;
-        List<Composer> composers;
-
-        TrackTable trackTbl;
-        List<Track> tracks;      
+  
    try {
             JAXBContext jaxbContext =  JAXBContext.newInstance("generated"); 
             Unmarshaller unMarshaller = jaxbContext.createUnmarshaller();
@@ -144,38 +137,23 @@ public class Album {
 
             albumTbl = (AlbumTable)unMarshaller.unmarshal(new File("album.xml"));
             albums = albumTbl.getAlbum();
-            
-            artistTbl = (ArtistTable)unMarshaller.unmarshal(new File("artist.xml"));
-            artists = artistTbl.getArtist();
-            
-            composerTbl = (ComposerTable)unMarshaller.unmarshal(new File("composer.xml"));
-            composers = composerTbl.getComposer();
-        
-            trackTbl = (TrackTable)unMarshaller.unmarshal(new File("track.xml"));
-            tracks = trackTbl.getTrack();
+
        
-            //System.out.println(tracks.get(0).getTrackName());
         
         Session session = HibernateContext.getSession();
         
         Transaction tx = session.beginTransaction();
         {
-            //session.save(tracks.get(0));
-            for(Composer composer: composers)
-                session.save(composer);
-            for(Artist artist: artists)
-                session.save(artist);
+
             for(Album album: albums)
                 session.save(album);
-            for(Track track: tracks)
-                session.save(track);
+
         }
         tx.commit();
         session.close();
 
         System.out.println("Album table loaded.");
-            // HibernateContext.createSchema();
-//ArtistHibObj.load(artists.get(1));
+
             
         } catch (JAXBException ex) {
             Logger.getLogger(Album.class.getName()).log(Level.SEVERE, null, ex);
@@ -183,6 +161,24 @@ public class Album {
             
             
     }
+public static void list()
+    {  
+        Session session = HibernateContext.getSession();
+        Criteria criteria = session.createCriteria(Album.class);
+        //criteria.addOrder(Order.asc("name"));
+        
+      //  criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+       
+        List<Album> albumList = criteria.list();       
+        System.out.println("All albums in the muisc library:");      
 
+      
+        for (Album albums : albumList) 
+        {
+            System.out.println(albums.getAlbumName());
+        }
+        
+        session.close();
+    }
     }
     

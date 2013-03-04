@@ -8,7 +8,11 @@
 
 package generated;
 
+import hibernateClasses.HibernateContext;
+import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -22,6 +26,9 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -101,8 +108,70 @@ private List<Album> albums;
     }
     
         @OneToMany(mappedBy="artist", targetEntity=Album.class,
-               cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+               cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     public List<Album> getAlbum() { return albums; }
     public void setAlbum(List<Album> tracks) { this.albums = tracks; }
+ public static void load()
+    {
 
+        ArtistTable artistTbl;
+        List<Artist> artists;
+
+        
+   try {
+            JAXBContext jaxbContext =  JAXBContext.newInstance("generated"); 
+            Unmarshaller unMarshaller = jaxbContext.createUnmarshaller();
+
+            artistTbl = (ArtistTable)unMarshaller.unmarshal(new File("artist.xml"));
+            artists = artistTbl.getArtist();
+
+        Session session = HibernateContext.getSession();
+        
+        Transaction tx = session.beginTransaction();
+        {
+            for(Artist artist: artists)
+                session.save(artist);
+
+        }
+        tx.commit();
+        session.close();
+
+        System.out.println("Artist XML loaded.");
+            
+        } catch (JAXBException ex) {
+            Logger.getLogger(Album.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            
+    }
+  public static void list()
+    {  
+        Session session = HibernateContext.getSession();
+        Criteria criteria = session.createCriteria(Artist.class);
+        //criteria.addOrder(Order.asc("name"));
+        
+      //  criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+       
+        List<Artist> artistList = criteria.list();       
+        System.out.println("All artist in the muisc library:");      
+
+      
+        for (Artist artists : artistList) 
+        {
+            System.out.println(artists.getArtistname());
+        }
+        
+        session.close();
+    }
+      public static Artist find(String name)
+    {
+        Session session = HibernateContext.getSession();
+        Query query = session.createQuery("from Artist where name = :name");
+        
+        query.setString("name", name);
+        Artist artist = (Artist) query.uniqueResult();
+        
+        session.close();
+        return artist;
+    }
 }

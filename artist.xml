@@ -13,4 +13,12 @@
 		<artistid>3</artistid>
 		<artistname>Stone Temple Pilots</artistname>
 	</artist>
+			<artist>
+		<artistid>4</artistid>
+		<artistname>Metallica</artistname>
+	</artist>
+				<artist>
+		<artistid>5</artistid>
+		<artistname>Weezer</artistname>
+	</artist>
 </artistTable>
